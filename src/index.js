@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import { app } from "../src/app.js";
 import connectDB from "../src/config/db.js";
+import { logger } from "./utiles/logger.js";
 
 
 dotenv.config({
@@ -12,16 +13,16 @@ const startServer = async () => {
         await connectDB();
         const port = process.env.PORT || 5000;
         app.listen(port, () => {
-            console.log(`Server running on http://localhost:${port}`);
+            logger.info(`Server running on http://localhost:${port}`);
         });
 
         app.on("error", (err) => {
-            console.log("Server error: ", err);
+            logger.error("Server error: ", err);
             throw err;
         });
 
     } catch (err) {
-        console.log("Database connection is failed !! ", err);
+        logger.error("Database connection is failed !! ", err);
         process.exit(1);
     }
 };
