@@ -1,0 +1,19 @@
+{
+  "name": "The_Alter_Office",
+  "version": "1.0.0",
+  "description": "Custom API Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sunilrathod098/Alteroffice_Assignment.git"
+  },
+  "author": "Sunil Rathod",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sunilrathod098/Alteroffice_Assignment/issues"
+  },
+  "homepage": "https://github.com/sunilrathod098/Alteroffice_Assignment#readme"
+}
