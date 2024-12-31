@@ -124,12 +124,13 @@ export const getUrl = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Short URL not found");
     }
 
-    return res.status(200)
-        .json(new ApiResponse(
-            200,
-            "Short URL retrieved successfully",
-            { url: url }
-        ));
+    return res
+    .status(200)
+    .json(new ApiResponse(
+        200,
+        "Short URL retrieved successfully",
+        { url: url }
+    ));
 });
 
 
