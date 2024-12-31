@@ -5,7 +5,7 @@ import { logger } from "./utils/logger.js";
 
 
 dotenv.config({
-    path: './.env'
+    path: "./.env"
 })
 
 const startServer = async () => {
