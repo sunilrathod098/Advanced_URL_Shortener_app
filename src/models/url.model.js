@@ -21,7 +21,11 @@ const urlSchema = new Schema({
     topic: {
         type: String,
         required: true
-    }
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
 }, {timestamps: true});
 
 export const Url = mongoose.model("Url", urlSchema);
