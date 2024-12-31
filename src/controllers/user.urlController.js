@@ -94,33 +94,6 @@ export const redirectToOriginalUrl = asyncHandler(async (req, res) => {
 });
 
 
-//Analytics function for a specific short URL
-export const getUrlAnalytics = asyncHandler(async (req, res) => {
-    const { shortUrl } = req.params;
-
-    try {
-        const url = await Url.findOne({ shortUrl });
-        if (!url) {
-            throw new ApiError(404, "Short URL not found");
-        }
-
-        return res.status(200)
-            .json(new ApiResponse(
-                200,
-                "URL analytics retrieved successfully",
-                {
-                    originalUrl: url.longUrl,
-                    shortUrl: url.shortUrl,
-                    clickCount: url.clickCount,
-                    topic: url.topic,
-                    createdAt: url.createdAt
-                }
-            ));
-    } catch (error) {
-        throw new ApiError(500, `Failed to get URL analytics: ${error.message}`);
-    }
-});
-
 
 //CURD operations for short URLs
 
