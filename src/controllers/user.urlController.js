@@ -1,11 +1,11 @@
 import geoip from "geoip-lite";
+import { redisClient } from "../config/redisClient.js";
 import { Url } from "../models/url.model.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import logger from "../utils/logger.js";
 import { generateRandomString } from "../utils/RandomString.js";
-import { redisClient } from "../utils/redis.js";
 
 
 //here we create a short URL function
@@ -37,10 +37,11 @@ export const createShortUrl = asyncHandler(async (req, res) => {
         }
 
         //this redis use for cache the short URL in Redis
-        const redis = redisClient.setex(shortUrl, 3600, longUrl)// 1 hour expiry time
-        if (!redis) {
-            throw new ApiError(500, `Something went wrong while caching the short URL in Redis: ${err.message}`);
-        };
+        redisClient.setex(shortUrl, 3600, longUrl, (err) => {
+            if (err) {
+                throw new ApiError(500, "Failed to cache the short URL in Redis")
+            }
+        });
 
         return res.status(200)
             .json(new ApiResponse(
