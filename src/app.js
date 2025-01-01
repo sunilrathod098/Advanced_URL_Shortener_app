@@ -4,6 +4,7 @@ import express from "express";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
+import { logger } from "./utils/logger.js";
 
 
 // Manually calculate __dirname for ES modules
@@ -33,12 +34,12 @@ app.use(
 
 
 //import routes here
+import analyticsRouter from "./routes/analyticsRoutes.js";
 import urlRouter from "./routes/urlRoutes.js";
 import authRouter from "./routes/userRoutes.js";
-import analyticsRouter from "./routes/analyticsRoutes.js";
 
 //Routes
-app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/url", urlRouter);
-app.use("/api/v1/user", analyticsRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/url", urlRouter);
+app.use("/api/user", analyticsRouter);
 

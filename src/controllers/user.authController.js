@@ -3,6 +3,7 @@ import { User } from "../models/user.model.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
+import { logger } from "../utils/logger.js";
 
 //google client OAuth2 setup
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -12,6 +13,8 @@ const generatedAccessToken = async (userId) => {
     try {
         const user = await User.findById(userId);
         const accessToken = user.generateAccessToken();
+        logger.info(`Generated: ${accessToken}`);
+        
         await user.save({ validateBeforeSave: false });
         return accessToken;
     } catch (error) {
@@ -26,23 +29,30 @@ export const googleSignIn = asyncHandler(async (req, res) => {
     const { token } = req.body;
     if (!token) {
         throw new ApiError(400, "Google token is required");
-
     }
+
     try {
         const ticket = await client.verifyIdToken({
             idToken: token,
             audience: process.env.GOOGLE_CLIENT_ID,
         })
+        if (!ticket) {
+            throw new ApiError(401, "Google token verification is failed");
+        }
+
         const payload = ticket.getPayload();
+        logger.info(`Google payload: ${payload}`);
+
         const user = await User.findOne({ googleId: payload.sub });
         if (!user) {
-            user = await User.create({
+            logger.info(`User not found, creating a new user`);
+            user = new User({
                 googleId: payload.sub,
                 email: payload.email,
                 name: payload.name
             });
-            await user.save({ validateBeforeSave: false });
         }
+        await user.save({ validateBeforeSave: false });
 
         //logger to check user is fetched or not correctly
         logger.info(`User ${user._id} signed in with Google`);
@@ -65,6 +75,7 @@ export const googleSignIn = asyncHandler(async (req, res) => {
                 }
             ));
     } catch (error) {
+        logger.error(`Error during google token verification: ${error.message}`);
         throw new ApiError(401, error?.message || "Invalid Google token");
     }
 });

@@ -1,6 +1,8 @@
 import { OAuth2Client } from 'google-auth-library';
 import User from '../models/user.model.js';
 import ApiError from '../utils/ApiError.js';
+import jwt from 'jsonwebtoken';
+import ApiError from '../utils/ApiError.js';
 import asyncHandler from '../utils/asyncHandler.js';
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
