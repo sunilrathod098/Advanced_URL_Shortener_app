@@ -652,3 +652,8 @@
 [2025-01-01 01:10:06 AM ERROR: Failed to ping Redis: ]
 [2025-01-01 01:10:29 AM ERROR: Failed to ping Redis: ]
 [2025-01-01 01:11:08 AM ERROR: Failed to ping Redis: ]
+[2025-01-01 11:35:22 AM ERROR: Database connection is failed !!  Socket already opened]
+[2025-01-01 11:35:26 AM ERROR: Database connection is failed !!  Socket already opened]
+[2025-01-01 11:35:37 AM ERROR: Database connection is failed !!  Socket already opened]
+[2025-01-01 11:35:39 AM ERROR: Database connection is failed !!  Socket already opened]
+[2025-01-01 11:35:43 AM ERROR: Database connection is failed !!  Socket already opened]

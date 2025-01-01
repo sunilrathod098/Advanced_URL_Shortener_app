@@ -25,8 +25,6 @@ const startServer = async () => {
         const port = process.env.PORT || 5000;
         app.listen(port, () => {
             logger.info(`Server running on http://localhost:${port}`);
-            // logger.info("Redis connection is successful !!");
-            // logger.info(`Environment: ${process.env.NODE_ENV}`);
         });
 
         app.on("error", (err) => {

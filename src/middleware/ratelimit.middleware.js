@@ -1,11 +1,16 @@
 import rateLimit from 'express-rate-limit';
-import asyncHandler from '../utils/asyncHandler.js';
+import RedisStore from 'rate-limit-redis';
+import { redisClient } from '../config/redisClient.js';
 
 
-export const limiter = asyncHandler(async (req, res) => {
-    return rateLimit({
+export const limiter = rateLimit({
+    store: new RedisStore({
+        sendCommand: (...args) => redisClient.sendCommand(args)
+    }),
         windowMs: 15 * 60 * 1000, //15 minutes
-        max: 100,
-        message: 'Too many requests, please try again later...'
+        max: 100, //limit each IP to 100 requests per windowMs
+        message: {
+            status: 429,
+            error: 'Too many requests, please try again later.'
+        }
     })
-})

@@ -2,7 +2,7 @@ import moment from "moment";
 import winston from "winston";
 
 //here we create winston logger is use for debugging, error tracking and monitoring.
-export const logger = winston.createLogger({
+const logger = winston.createLogger({
     level: "info",
     format: winston.format.combine(
         //use IST Indian Standard Time
@@ -23,3 +23,5 @@ export const logger = winston.createLogger({
         new winston.transports.File({ filename: "logs/combined.log" })
     ],
 });
+
+export { logger };

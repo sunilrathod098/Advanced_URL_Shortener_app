@@ -4,10 +4,10 @@ here we generate a random string for use as a short URL or identifies a user.
 @return{string} - the random string generated in alphanumerical string type.
 */
 
-import { asyncHandler } from "./asyncHandler";
+import asyncHandler from "./asyncHandler.js";
 
 
-export const generateRandomString = asyncHandler(async(length = 6) => {
+const generateRandomString = asyncHandler(async(length = 6) => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = "";
     for (let i = 0; i< length; i++) {
@@ -16,6 +16,6 @@ export const generateRandomString = asyncHandler(async(length = 6) => {
     return result;
 })
 
-
+export { generateRandomString };
 
 

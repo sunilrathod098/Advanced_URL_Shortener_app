@@ -4,7 +4,7 @@ import { Url } from "../models/url.model.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import logger from "../utils/logger.js";
+import {logger} from "../utils/logger.js";
 import { generateRandomString } from "../utils/RandomString.js";
 
 
@@ -37,7 +37,7 @@ export const createShortUrl = asyncHandler(async (req, res) => {
         }
 
         //this redis use for cache the short URL in Redis
-        redisClient.setex(shortUrl, 3600, longUrl, (err) => {
+        await redisClient.setEx(shortUrl, 3600, longUrl, (err) => {
             if (err) {
                 throw new ApiError(500, "Failed to cache the short URL in Redis")
             }
