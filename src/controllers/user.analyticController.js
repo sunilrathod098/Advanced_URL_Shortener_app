@@ -53,13 +53,13 @@ const getUrlAnalytics = asyncHandler(async (req, res) => {
                     }
                 ));
         } catch (error) {
-            logger.error(`Failed to get URL analytics: ${error.message}`);
+            // logger.error(`Failed to get URL analytics: ${error.message}`);
             throw new ApiError(500, `Failed to get URL analytics: ${error.message}`);
         }
 });
 
 
-// Controller to fetch topic-based analytics for a user
+// function is  to fetch topic-based analytics for a user
 const getTopicBasedAnalytics = asyncHandler(async (req, res) => {
     const { topic } = req.params;
 
@@ -127,7 +127,6 @@ const getTopicBasedAnalytics = asyncHandler(async (req, res) => {
     }));
 });
 
-
 const getOverallAnalytics = asyncHandler(async (req, res) => {
     if (!req.user || !req.user._id) {
         logger.error('Unauthorized access - User is not authenticated');
@@ -136,14 +135,15 @@ const getOverallAnalytics = asyncHandler(async (req, res) => {
 
     const userId = req.user._id;
     logger.info(`Fetching overall analytics for user: ${userId}`);
+
     try {
-        //find all urls and created by userId
+        //find all URLs created by the userId
         const urls = await Url.find({ userId });
         if (!urls || urls.length === 0) {
-            throw new ApiError(404, 'User not found');
+            logger.error("No URL's found for user");
+            throw new ApiError(404, 'No URLs found for user');
         }
 
-        //here aggregate overall analytics
         let totalClicks = 0;
         let uniqueUsers = new Set();
         const clicksByDate = [];
@@ -152,15 +152,18 @@ const getOverallAnalytics = asyncHandler(async (req, res) => {
 
         for (const url of urls) {
             logger.info(`Processing URL: ${url._id}`);
-            const analytics = await Analytics.findOne({ shortUrl: url._id });
-            logger.info(`Analytics for ${url._id}:`, analytics);
+
+            logger.info(`Querying Analytics for shortUrl: 'overall'`)
+            const analytics = await Analytics.findOne({ shortUrl: 'overall' });
 
             if (!analytics) {
-                logger.error(`No analytics found for url ${url._id}`);
-                continue;
+                logger.error(`Analytics data for 'overall' is missing or not found`);
+                return res.status(404).json({ message: "Analytics data not found for overall" });
             }
 
-            totalClicks += analytics.totalClicks;
+            logger.info(`Analytics for ${url._id}:`, analytics);
+
+            totalClicks += analytics.totalClicks || 0;
             analytics.uniqueUsers.forEach(user => uniqueUsers.add(user));
 
             analytics.clicksByDate.forEach(clickData => {
@@ -193,24 +196,27 @@ const getOverallAnalytics = asyncHandler(async (req, res) => {
             });
         }
 
-        return res
-            .status(200)
-            .json(new ApiResponse(
-                200,
-                'Overall analytics retrieved successfully',
-                {
-                    totalClicks,
-                    uniqueUsers: uniqueUsers.size,
-                    clicksByDate,
-                    osType,
-                    deviceType,
-                }
-            ));
+        return res.status(200).json(new ApiResponse(
+            200,
+            'Overall analytics retrieved successfully',
+            {
+                totalClicks,
+                uniqueUsers: uniqueUsers.size,
+                clicksByDate,
+                osType,
+                deviceType,
+            }
+        ));
     } catch (error) {
-        logger.error(`Error retrieving overall analytics: ${error.message}`);
-        throw new ApiError(500, `Error retrieving overall analytics: ${error.message}`)
+        logger.error(`Error retrieving overall analytics: ${error.message}`, error);
+        return res.status(500).json({
+            message: `Error retrieving overall analytics: ${error.message}`,
+            error: error.stack,
+        });
     }
 });
+
+
 
 export {
     getOverallAnalytics, getTopicBasedAnalytics, getUrlAnalytics
