@@ -18,24 +18,6 @@ const userSchema = new Schema({
     timestamps: true
 });
 
-//this are the middleware functions save before user run
-userSchema.pre("save", async function (next) {
-    if (!this.isModified("password"))
-        return next()
-
-    //this method is user for encrypt (into a hash code un-readable message type) the password
-    this.password = await bcrypt.hash(this.password, 10)
-    next()
-})
-
-//this method is user for decrypt (into a hash code readable password type) the password
-userSchema.methods.isPasswordCorrect = async function (password) {
-
-    if (!password || !this.password) {
-        throw new Error("Password or hash is missing");
-    }
-    return await bcrypt.compare(password, this.password)
-}
 
 //GENERATE ACCESS TOKEN
 userSchema.methods.generateAccessToken = function () {
