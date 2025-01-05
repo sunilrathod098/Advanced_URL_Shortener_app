@@ -1,81 +1,84 @@
-import { OAuth2Client } from "google-auth-library";
 import { User } from "../models/user.model.js";
 import ApiError from "../utils/ApiError.js";
-import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import { logger } from "../utils/logger.js";
-
-//google client OAuth2 setup
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 
-const generatedAccessToken = async (userId) => {
+// Function to generate Access and Refresh Tokens
+export const generateAccessTokenAndRefreshToken = async (userId) => {
     try {
         const user = await User.findById(userId);
+        if (!user) {
+            throw new ApiError(404, "User not found.");
+        }
         const accessToken = user.generateAccessToken();
-        logger.info(`Generated: ${accessToken}`);
-        
+        const refreshToken = user.generateRefreshToken();
+        user.refreshToken = refreshToken;
         await user.save({ validateBeforeSave: false });
-        return accessToken;
+        return { accessToken, refreshToken };
     } catch (error) {
-        throw new ApiError(500, "Something went wrong while generating access token");
+        throw new ApiError(500, "Error generating access and refresh tokens.");
     }
 };
 
 
 
-//Google sign-In Function
+// Google Sign-In Function with Email/Password Fallback
 export const googleSignIn = asyncHandler(async (req, res) => {
-    const { token } = req.body;
-    if (!token) {
-        throw new ApiError(400, "Google token is required");
-    }
+    const { email, password } = req.body;
 
-    try {
-        const ticket = await client.verifyIdToken({
-            idToken: token,
-            audience: process.env.GOOGLE_CLIENT_ID,
-        })
-        if (!ticket) {
-            throw new ApiError(401, "Google token verification is failed");
-        }
+    // First, check if the user is signed in with Google or not
+    const user = req.user;
 
-        const payload = ticket.getPayload();
-        logger.info(`Google payload: ${payload}`);
+    if (user) {
 
-        const user = await User.findOne({ googleId: payload.sub });
-        if (!user) {
-            logger.info(`User not found, creating a new user`);
-            user = new User({
-                googleId: payload.sub,
-                email: payload.email,
-                name: payload.name
-            });
-        }
-        await user.save({ validateBeforeSave: false });
+        try {
+            const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id);
 
-        //logger to check user is fetched or not correctly
-        logger.info(`User ${user._id} signed in with Google`);
-
-        const accessToken = await generatedAccessToken(user._id);
-
-        return res
-            .status(200)
-            .cookie("accessToken", accessToken,
-                {
-                    httpOnly: true, //secure the cookies in production level
-                    secure: process.env.NODE_ENV === "production", // use https in production level
-                    sameSite: "none", // allow the cookies to be sent in cross-site requests
-                })
-            .json(new ApiResponse(
-                200,
-                "Successfully signed in with Google",
-                {
-                    accessToken
+            return res.status(200).json({
+                status: "success",
+                message: "User has successfully signed in with their Google account.",
+                data: {
+                    user: {
+                        _id: user._id,
+                        email: user.email,
+                        name: user.name
+                    },
+                    accessToken,
+                    refreshToken
                 }
-            ));
-    } catch (error) {
-        logger.error(`Error during google token verification: ${error.message}`);
-        throw new ApiError(401, error?.message || "Invalid Google token");
+            });
+        } catch (error) {
+            throw new ApiError(500, "Error with Google sign-in process.");
+        }
+        //if he/she not have a google account then instantly create with email and password
+    } else if (email && password) {
+        const user = await User.findOne({ email }).select("+password");
+
+        if (!user) {
+            throw new ApiError(404, "User not found. Please register first.");
+        }
+
+        const isPasswordValid = await user.isPasswordCorrect(password);
+        if (!isPasswordValid) {
+            throw new ApiError(401, "Invalid credentials.");
+        }
+
+        const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id);
+
+        return res.status(200).json({
+            status: "success",
+            message: "User successfully signed in with email and password.",
+            data: {
+                user: {
+                    _id: user._id,
+                    email: user.email,
+                    name: user.name
+                },
+                accessToken,
+                refreshToken
+            }
+        });
+    } else {
+        throw new ApiError(400, "Please provide Google token or email/password.");
     }
 });

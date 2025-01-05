@@ -1,18 +1,29 @@
+import { error } from "console";
 import { Url } from "../models/url.model.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
+import { logger } from "../utils/logger.js";
 
 
 //Analytics function for a specific short URL
 export const getUrlAnalytics = asyncHandler(async (req, res) => {
     const { shortUrl } = req.params;
 
+    logger.error("Request params :",req.params)
+    logger.info("Received Short URL:", shortUrl);
+
     try {
-        const url = await Url.findOne({ shortUrl });
+        const url = await Url.findOne({ shortUrl: req.params.shortUrl  });
         if (!url) {
-            throw new ApiError(404, "Short URL not found");
+            logger.error(`Error While fetching the ShortURL: ${error.message}`)
+            throw new ApiError(401,error?.message, "Short URL not found");
         }
+
+        logger.error("Received URL: ", url);
+
+        const analytics = await url.getAnalytics();
+        logger.info("Analytics for URL:", analytics);
 
         return res.status(200)
             .json(new ApiResponse(
@@ -27,6 +38,7 @@ export const getUrlAnalytics = asyncHandler(async (req, res) => {
                 }
             ));
     } catch (error) {
+        logger.error(`Failed to get URL analytics: ${error.message}`);
         throw new ApiError(500, `Failed to get URL analytics: ${error.message}`);
     }
 });

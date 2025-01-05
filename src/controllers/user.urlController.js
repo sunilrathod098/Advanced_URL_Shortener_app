@@ -47,7 +47,7 @@ export const createShortUrl = asyncHandler(async (req, res) => {
             .json(new ApiResponse(
                 200,
                 "Short URL created successfully",
-                { shortUrl }
+                { shortUrl, customAlias }
             ));
     } catch (error) {
         throw new ApiError(500, `Something went wrong while creating short URL: ${error.message}`);
@@ -57,13 +57,21 @@ export const createShortUrl = asyncHandler(async (req, res) => {
 
 //redirect to the original URL
 export const redirectToOriginalUrl = asyncHandler(async (req, res) => {
-    const { shortUrl } = req.params;
+    logger.info("Request parameters:", req.params);
+
+    const { alias } = req.params;
+    if (!alias) {
+        throw new ApiError(400, "Alias is required");
+    }
+    
+    logger.info("Received alias:", alias);
 
     try {
-        const url = await Url.findOne({ shortUrl });
+        const url = await Url.findOne({ shortUrl: alias });
         if (!url) {
             throw new ApiError(404, "Short URL not found");
         }
+        logger.info("Received URL", url);
 
         //here we increment the click count and save the counts
         url.clickCount += 1;
@@ -77,7 +85,7 @@ export const redirectToOriginalUrl = asyncHandler(async (req, res) => {
         }
 
         //log the redirection
-        logger.info(`Redirecting: ${shortUrl} to ${url.longUrl}, IP:${ip} from ${geo.city?.country || "Unknown"}`);
+        logger.info(`Redirecting: ${alias} to ${url.longUrl}, IP:${ip} from ${geo.city?.country || "Unknown"}`);
         
         return res
             .redirect(url.longUrl)
@@ -90,6 +98,7 @@ export const redirectToOriginalUrl = asyncHandler(async (req, res) => {
                 }
             ));
     } catch (error) {
+        logger.error(`Error in redirectToOriginalUrl: ${error.message}`)
         throw new ApiError(500, `Failed to redirecting to the original URL: ${error.message}`);
     }
 });
@@ -101,11 +110,13 @@ export const redirectToOriginalUrl = asyncHandler(async (req, res) => {
 //get all short URLs created by the user
 export const getUserUrls = asyncHandler(async (req, res) => {
     const userId = req.user._id;
+    logger.info("Retrieved user: ", userId);
 
     const urls = await Url.find({ userId });
     if (!urls) {
         throw new ApiError(404, "No short URLs found");
     }
+    logger.info("Retrieved url: ", urls);
 
     return res.status(200)
         .json(new ApiResponse(
