@@ -183,6 +183,11 @@ install nodemon
 3. Make changes and commit.
 4. Push your branch and create a pull request.
 
+## Deployment
+
+This project has been successfully deployed on Vercel. You can access the live API at [Vercel Deployment URL](<https://alteroffice-assignment-7oqy.vercel.app/>).
+
+---
 ---
 
 ## License
