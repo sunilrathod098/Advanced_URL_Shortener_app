@@ -142,8 +142,8 @@ install nodemon
 | Method | Endpoint                      | Description           |
 |--------|-------------------------------|-----------------------|
 | POST   | `/api/url/short-url`          | Create a shortened URL|
-| POST   | `/api/url/short-url/:shortUrl`| RedirectToOriginal URL|
-| POST   | `/api/url/urls`               | GetAll shortened URL  |
+| GET   | `/api/url/short-url/:shortUrl`| RedirectToOriginal URL|
+| GET   | `/api/url/urls`               | GetAll shortened URL  |
 | GET    | `/api/url/:urlId`             |Retrieve a shortened URL|
 | PUT    | `/api/url/:urlId`             |Update a shortened URL  |
 | DELETE | `/api/url/:urlId`             | Delete a shortened URL |
