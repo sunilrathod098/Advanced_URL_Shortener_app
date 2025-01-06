@@ -8,9 +8,10 @@ const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Helper function to find or create a user
 const findOrCreateUser = async (email, googleId, name) => {
-    let user = await User.findOne({ email }).select("-password -refreshToken");
+    let user = await User.findOne({ googleId }).select("-password -refreshToken");
     if (!user) {
         user = await User.create({ email, googleId, name });
+        user.save()
     }
     return user;
 };

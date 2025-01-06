@@ -1,0 +1,838 @@
+{
+	"info": {
+		"_postman_id": "03f84ff5-6263-4321-9e29-c450c4781418",
+		"name": "Custom Shorten URL API",
+		"description": "API documentation for shortening URL's",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37991803"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "analytics",
+							"item": [
+								{
+									"name": "{alias}",
+									"item": [
+										{
+											"name": "Get analytics for a specific URL",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/user/analytics/:alias",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"user",
+														"analytics",
+														":alias"
+													],
+													"variable": [
+														{
+															"key": "alias",
+															"value": "<string>",
+															"description": "(Required) The alias of the URL."
+														}
+													]
+												},
+												"description": "Retrieves the analytics for a specific URL based on its alias."
+											},
+											"response": [
+												{
+													"name": "URL analytics data.",
+													"originalRequest": {
+														"method": "GET",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/api/user/analytics/:alias",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"user",
+																"analytics",
+																":alias"
+															],
+															"variable": [
+																{
+																	"key": "alias"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "topic",
+									"item": [
+										{
+											"name": "{topic}",
+											"item": [
+												{
+													"name": "Get topic-based analytics",
+													"request": {
+														"method": "GET",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/api/user/analytics/topic/:topic",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"user",
+																"analytics",
+																"topic",
+																":topic"
+															],
+															"variable": [
+																{
+																	"key": "topic",
+																	"value": "<string>",
+																	"description": "(Required) The topic to get analytics for."
+																}
+															]
+														},
+														"description": "Retrieves analytics for a specific topic."
+													},
+													"response": [
+														{
+															"name": "Topic-based analytics data.",
+															"originalRequest": {
+																"method": "GET",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/api/user/analytics/topic/:topic",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"user",
+																		"analytics",
+																		"topic",
+																		":topic"
+																	],
+																	"variable": [
+																		{
+																			"key": "topic"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "text",
+															"header": [],
+															"cookie": [],
+															"body": ""
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "overall",
+									"item": [
+										{
+											"name": "Get overall analytics",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/user/analytics/overall",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"user",
+														"analytics",
+														"overall"
+													]
+												},
+												"description": "Retrieves overall analytics."
+											},
+											"response": [
+												{
+													"name": "Overall analytics data.",
+													"originalRequest": {
+														"method": "GET",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/api/user/analytics/overall",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"user",
+																"analytics",
+																"overall"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "url",
+					"item": [
+						{
+							"name": "short-url",
+							"item": [
+								{
+									"name": "{alias}",
+									"item": [
+										{
+											"name": "Redirect to the original URL",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/url/short-url/:alias",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"url",
+														"short-url",
+														":alias"
+													],
+													"variable": [
+														{
+															"key": "alias",
+															"value": "<string>",
+															"description": "(Required) The alias of the shortened URL."
+														}
+													]
+												},
+												"description": "Redirects to the original URL from the shortened URL alias."
+											},
+											"response": [
+												{
+													"name": "Redirects to the original URL.",
+													"originalRequest": {
+														"method": "GET",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/api/url/short-url/:alias",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"url",
+																"short-url",
+																":alias"
+															],
+															"variable": [
+																{
+																	"key": "alias"
+																}
+															]
+														}
+													},
+													"status": "Found",
+													"code": 302,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "Create a shortened URL",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/url/short-url",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"url",
+												"short-url"
+											]
+										},
+										"description": "Accepts a URL and returns a shortened version."
+									},
+									"response": [
+										{
+											"name": "The shortened URL.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"url\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/url/short-url",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"url",
+														"short-url"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Invalid URL format.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"url\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/url/short-url",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"url",
+														"short-url"
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "urls",
+							"item": [
+								{
+									"name": "{urlId}",
+									"item": [
+										{
+											"name": "Get details of a specific URL",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/url/urls/:urlId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"url",
+														"urls",
+														":urlId"
+													],
+													"variable": [
+														{
+															"key": "urlId",
+															"value": "<string>",
+															"description": "(Required) The ID of the URL."
+														}
+													]
+												},
+												"description": "Retrieves details of a URL based on the provided ID."
+											},
+											"response": [
+												{
+													"name": "URL details.",
+													"originalRequest": {
+														"method": "GET",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/api/url/urls/:urlId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"url",
+																"urls",
+																":urlId"
+															],
+															"variable": [
+																{
+																	"key": "urlId"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										},
+										{
+											"name": "Update a specific URL",
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"url\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/url/urls/:urlId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"url",
+														"urls",
+														":urlId"
+													],
+													"variable": [
+														{
+															"key": "urlId",
+															"value": "<string>",
+															"description": "(Required) The ID of the URL."
+														}
+													]
+												},
+												"description": "Updates the URL details with the provided ID."
+											},
+											"response": [
+												{
+													"name": "URL updated successfully.",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"url\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/url/urls/:urlId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"url",
+																"urls",
+																":urlId"
+															],
+															"variable": [
+																{
+																	"key": "urlId"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Invalid URL format.",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"url\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/url/urls/:urlId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"url",
+																"urls",
+																":urlId"
+															],
+															"variable": [
+																{
+																	"key": "urlId"
+																}
+															]
+														}
+													},
+													"status": "Bad Request",
+													"code": 400,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										},
+										{
+											"name": "Delete a specific URL",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/url/urls/:urlId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"url",
+														"urls",
+														":urlId"
+													],
+													"variable": [
+														{
+															"key": "urlId",
+															"value": "<string>",
+															"description": "(Required) The ID of the URL."
+														}
+													]
+												},
+												"description": "Deletes the URL with the given ID."
+											},
+											"response": [
+												{
+													"name": "URL deleted successfully.",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/api/url/urls/:urlId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"url",
+																"urls",
+																":urlId"
+															],
+															"variable": [
+																{
+																	"key": "urlId"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "Get all URLs of the user",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/url/urls",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"url",
+												"urls"
+											]
+										},
+										"description": "Retrieves a list of all URLs created by the authenticated user."
+									},
+									"response": [
+										{
+											"name": "List of URLs.",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/url/urls",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"url",
+														"urls"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "google-signin",
+							"item": [
+								{
+									"name": "Sign in with Google",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/auth/google-signin",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"google-signin"
+											]
+										},
+										"description": "Allows users to sign in using their Google account."
+									},
+									"response": [
+										{
+											"name": "Successfully signed in.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"email\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/auth/google-signin",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"auth",
+														"google-signin"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Invalid token or request.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"email\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/auth/google-signin",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"auth",
+														"google-signin"
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5000"
+		}
+	]
+}

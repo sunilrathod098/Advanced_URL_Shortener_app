@@ -3,6 +3,8 @@ import cors from "cors";
 import express from "express";
 import morgan from "morgan";
 import path from "path";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 import { fileURLToPath } from "url";
 import { logger } from "./utils/logger.js";
 
@@ -32,6 +34,32 @@ app.use(
     })
 );
 
+//swagger setup
+const swaggerOptions = {
+    swaggerDefinition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Custom Shorten URL API',
+            version: '1.0.0',
+            description: 'API documentation for shortening URL\'s',
+        },
+        servers: [
+            {
+                url: 'http://localhost:5000',
+            },
+        ],
+    },
+    apis: ['./src/routes/*.js'],  // Ensure correct path to routes
+};
+
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+
+//server swagger UI
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+// Serve Swagger JSON file at /swagger.json
+app.get('/swagger.json', (req, res) => {
+    res.json(swaggerDocs);
+});
 
 //import routes here
 import analyticsRouter from "./routes/analyticsRoutes.js";

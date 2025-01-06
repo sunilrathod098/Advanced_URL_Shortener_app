@@ -25,6 +25,9 @@ const startServer = async () => {
         const port = process.env.PORT || 5000;
         app.listen(port, () => {
             logger.info(`Server running on http://localhost:${port}`);
+            logger.info(`Swagger UI available at http://localhost:${port}/api-docs`);
+            logger.info(`Swagger JSON available at http://localhost:${port}/swagger.json`);
+
         });
 
         app.on("error", (err) => {

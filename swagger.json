@@ -1,0 +1,218 @@
+    {
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Custom Shorten URL API",
+        "version": "1.0.0",
+        "description": "API documentation for shortening URL's"
+    },
+    "servers": [{ "url": "http://localhost:5000" }],
+    "paths": {
+        "/api/user/analytics/{alias}": {
+        "get": {
+            "summary": "Get analytics for a specific URL",
+            "description": "Retrieves the analytics for a specific URL based on its alias.",
+            "tags": ["Analytics"],
+            "parameters": [
+            {
+                "in": "path",
+                "name": "alias",
+                "required": true,
+                "description": "The alias of the URL.",
+                "schema": { "type": "string" }
+            }
+            ],
+            "responses": { "200": { "description": "URL analytics data." } }
+        }
+        },
+        "/api/user/analytics/topic/{topic}": {
+        "get": {
+            "summary": "Get topic-based analytics",
+            "description": "Retrieves analytics for a specific topic.",
+            "tags": ["Analytics"],
+            "parameters": [
+            {
+                "in": "path",
+                "name": "topic",
+                "required": true,
+                "description": "The topic to get analytics for.",
+                "schema": { "type": "string" }
+            }
+            ],
+            "responses": { "200": { "description": "Topic-based analytics data." } }
+        }
+        },
+        "/api/user/analytics/overall": {
+        "get": {
+            "summary": "Get overall analytics",
+            "description": "Retrieves overall analytics.",
+            "tags": ["Analytics"],
+            "responses": { "200": { "description": "Overall analytics data." } }
+        }
+        },
+        "/api/url/short-url": {
+        "post": {
+            "summary": "Create a shortened URL",
+            "description": "Accepts a URL and returns a shortened version.",
+            "tags": ["URL"],
+            "requestBody": {
+            "required": true,
+            "content": {
+                "application/json": {
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                    "url": {
+                        "type": "string",
+                        "description": "The URL to shorten."
+                    }
+                    }
+                }
+                }
+            }
+            },
+            "responses": {
+            "200": { "description": "The shortened URL." },
+            "400": { "description": "Invalid URL format." }
+            }
+        }
+        },
+        "/api/url/short-url/{alias}": {
+        "get": {
+            "summary": "Redirect to the original URL",
+            "description": "Redirects to the original URL from the shortened URL alias.",
+            "tags": ["URL"],
+            "parameters": [
+            {
+                "in": "path",
+                "name": "alias",
+                "required": true,
+                "description": "The alias of the shortened URL.",
+                "schema": { "type": "string" }
+            }
+            ],
+            "responses": {
+            "302": { "description": "Redirects to the original URL." }
+            }
+        }
+        },
+        "/api/url/urls": {
+        "get": {
+            "summary": "Get all URLs of the user",
+            "description": "Retrieves a list of all URLs created by the authenticated user.",
+            "tags": ["URL"],
+            "responses": { "200": { "description": "List of URLs." } }
+        }
+        },
+        "/api/url/urls/{urlId}": {
+        "get": {
+            "summary": "Get details of a specific URL",
+            "description": "Retrieves details of a URL based on the provided ID.",
+            "tags": ["URL"],
+            "parameters": [
+            {
+                "in": "path",
+                "name": "urlId",
+                "required": true,
+                "description": "The ID of the URL.",
+                "schema": { "type": "string" }
+            }
+            ],
+            "responses": { "200": { "description": "URL details." } }
+        },
+        "put": {
+            "summary": "Update a specific URL",
+            "description": "Updates the URL details with the provided ID.",
+            "tags": ["URL"],
+            "parameters": [
+            {
+                "in": "path",
+                "name": "urlId",
+                "required": true,
+                "description": "The ID of the URL.",
+                "schema": { "type": "string" }
+            }
+            ],
+            "requestBody": {
+            "required": true,
+            "content": {
+                "application/json": {
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                    "url": {
+                        "type": "string",
+                        "description": "The new URL to update."
+                    }
+                    }
+                }
+                }
+            }
+            },
+            "responses": {
+            "200": { "description": "URL updated successfully." },
+            "400": { "description": "Invalid URL format." }
+            }
+        },
+        "delete": {
+            "summary": "Delete a specific URL",
+            "description": "Deletes the URL with the given ID.",
+            "tags": ["URL"],
+            "parameters": [
+            {
+                "in": "path",
+                "name": "urlId",
+                "required": true,
+                "description": "The ID of the URL.",
+                "schema": { "type": "string" }
+            }
+            ],
+            "responses": { "200": { "description": "URL deleted successfully." } }
+        }
+        },
+        "/api/auth/google-signin": {
+        "post": {
+            "summary": "Sign in with Google",
+            "description": "Allows users to sign in using their Google account.",
+            "tags": ["Auth"],
+            "parameters": [
+            {
+                "name": "Authorization",
+                "in": "header",
+                "description": "Bearer token for Google sign-in (Google ID token).",
+                "required": true,
+                "schema": {
+                "type": "string",
+                "example": "Bearer your-google-id-token-here"
+                }
+            }
+            ],
+            "requestBody": {
+            "required": false,
+            "content": {
+                "application/json": {
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                    "email": {
+                        "type": "string",
+                        "description": "User's email for fallback email/password login (optional)."
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "User's password for fallback email/password login (optional)."
+                    }
+                    }
+                }
+                }
+            }
+            },
+            "responses": {
+            "200": { "description": "Successfully signed in." },
+            "400": { "description": "Invalid token or request." }
+            }
+        }
+        }
+    },
+    "components": {},
+    "tags": []
+    }
