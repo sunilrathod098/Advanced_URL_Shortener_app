@@ -5,7 +5,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -25,14 +25,27 @@ export const AuthProvider = ({ children }) => {
         fetchUser();
     }, []);
 
-    const login = async (token) => {
-        const response = await axios.post("/api/auth/google-signin", { token });
-        setUser(response.data.user);
+    const login = async (data) => {
+        try {
+            const response = await axios.post("/api/auth/google-signin", data, {
+                withCredentials: true,
+            })
+            setUser(response.data.user);
+            localStorage.setItem("accessToken", response.data.accessToken);
+        } catch (error) {
+            console.error("Login failed", error);
+            throw error;
+        }
     };
 
     const logout = async () => {
-        await axios.post("/api/auth/logout", {}, { withCredentials: true });
-        setUser(null);
+        try {
+            await axios.post("/api/auth/logout", {}, { withCredentials: true });
+            setUser(null);
+            localStorage.removeItem("accessToken");
+        } catch (error) {
+            console.error("Logout failed", error);
+        }
     };
 
     return (

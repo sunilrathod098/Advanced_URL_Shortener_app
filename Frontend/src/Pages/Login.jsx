@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function Login() {
@@ -7,15 +7,13 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const { login } = useAuth();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("/api/auth/google-signin", {
-                email,
-                password,
-            });
-            login(response.data.accessToken);
+            await login({ email, password });
+            navigate("/dashboard");
         } catch (error) {
             setError(error.response?.data?.message || "Login failed");
         }
@@ -38,16 +36,17 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
+                    className="w-full p-2 border border-gray-300 rounded"
                     required
                 />
                 <button
                     type="submit"
-                    className="w-fill bg-blue-500 text-white p-2 rounded"
+                    className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
                 >
                     Login
                 </button>
             </form>
-            {error && <p className="text-red-500 text-center">{error}</p>}
+            {error && <p className="text-red-600 text-center mt-4">{error}</p>}
         </div>
     );
 }

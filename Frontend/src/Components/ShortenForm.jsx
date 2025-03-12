@@ -25,12 +25,12 @@ export default function ShortenForm() {
                     value={longUrl}
                     onChange={(e) => setLongUrl(e.target.value)}
                     placeholder="Enter a long URL"
-                    className="w-full p-2 border border-gray-300 rounded"
+                    className="w-full p-2 border border-gray-500 rounded"
                     required
                 />
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white p-2 rounded"
+                    className="w-full bg-blue-500 gap-4 text-white mt-4 p-2 rounded hover:bg-blue-700"
                 >
                     Shorten
                 </button>
@@ -38,7 +38,7 @@ export default function ShortenForm() {
             {shortUrl && (
                 <div className="mt-4">
                     <p>
-                        Short URL:{" "}
+                        Short URL:
                         <a href={shortUrl} className="text-blue-500">
                             {shortUrl}
                         </a>

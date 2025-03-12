@@ -1,10 +1,10 @@
 import axios from "axios";
-import { userEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Analytics() {
     const [analytics, setAnalytics] = useState(null);
 
-    userEffect(() => {
+    useEffect(() => {
         const fetchAnalytics = async () => {
             try {
                 const response = await axios.get("/api/user/analytics/overall");
